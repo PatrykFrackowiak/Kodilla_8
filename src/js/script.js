@@ -57,7 +57,10 @@
       this.id = id;
       this.data = data;
       this.renderInMenu();
-      this.initAccordeon();
+      this.getElements();
+      this.initAccordion();
+      this.initOrderFrom();
+      this.processOrder();
     }
 
     renderInMenu() {
@@ -68,10 +71,18 @@
       menuContainer.appendChild(thisProduct.element);
     }
 
-    initAccordeon() {
+    getElements() {
       const thisProduct = this;
-      const clickable = thisProduct.element.querySelector(select.menuProduct.clickable);
-      clickable.addEventListener('click', (event) => {
+      thisProduct.accordionTrigger = thisProduct.element.querySelector(select.menuProduct.clickable);
+      thisProduct.form = thisProduct.element.querySelector(select.menuProduct.form);
+      thisProduct.formInputs = thisProduct.form.querySelectorAll(select.all.formInputs);
+      thisProduct.cartButton = thisProduct.element.querySelector(select.menuProduct.cartButton);
+      thisProduct.priceElem = thisProduct.element.querySelector(select.menuProduct.priceElem);
+    }
+
+    initAccordion() {
+      const thisProduct = this;
+      thisProduct.accordionTrigger.addEventListener('click', (event) => {
         event.preventDefault();
         thisProduct.element.classList.toggle(classNames.menuProduct.wrapperActive);
         const activeProducts = document.querySelectorAll(select.all.menuProductsActive);
@@ -81,6 +92,46 @@
           }
         }
       });
+    }
+
+    initOrderFrom() {
+      const thisProduct = this;
+
+      thisProduct.form.addEventListener('submit', function (event) {
+        event.preventDefault();
+        thisProduct.processOrder();
+      });
+
+      for (let input of thisProduct.formInputs) {
+        input.addEventListener('change', function () {
+          thisProduct.processOrder();
+        });
+      }
+
+      thisProduct.cartButton.addEventListener('click', function (event) {
+        event.preventDefault();
+        thisProduct.processOrder();
+      });
+    }
+
+    processOrder() {
+      const thisProduct = this;
+      const formData = utils.serializeFormToObject(thisProduct.form);
+      let price = thisProduct.data.price;
+      const categories = thisProduct.data.params;
+      if (categories) {
+        for (let category in categories) {
+          const ingredients = categories[category].options;
+          for (let ingredient in ingredients) {
+            if(!ingredients[ingredient].default && formData[category].includes(ingredient)){
+              price += ingredients[ingredient].price;
+            } else if(ingredients[ingredient].default && !formData[category].includes(ingredient)){
+              price -= ingredients[ingredient].price;
+            }
+          }
+        }
+        thisProduct.priceElem.innerHTML = price;
+      }
     }
   }
 
