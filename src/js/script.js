@@ -78,6 +78,7 @@
       thisProduct.formInputs = thisProduct.form.querySelectorAll(select.all.formInputs);
       thisProduct.cartButton = thisProduct.element.querySelector(select.menuProduct.cartButton);
       thisProduct.priceElem = thisProduct.element.querySelector(select.menuProduct.priceElem);
+      thisProduct.imageWrapper = thisProduct.element.querySelector(select.menuProduct.imageWrapper);
     }
 
     initAccordion() {
@@ -123,10 +124,19 @@
         for (let category in categories) {
           const ingredients = categories[category].options;
           for (let ingredient in ingredients) {
-            if(!ingredients[ingredient].default && formData[category].includes(ingredient)){
+            if (!ingredients[ingredient].default && formData[category].includes(ingredient)) {
               price += ingredients[ingredient].price;
-            } else if(ingredients[ingredient].default && !formData[category].includes(ingredient)){
+            } else if (ingredients[ingredient].default && !formData[category].includes(ingredient)) {
               price -= ingredients[ingredient].price;
+            }
+            if (formData[category].includes(ingredient)) {
+              for (let ingredientImage of thisProduct.imageWrapper.querySelectorAll(`.${category}-${ingredient}`)) {
+                ingredientImage.classList.add(classNames.menuProduct.imageVisible);
+              }
+            } else {
+              for (let ingredientImage of thisProduct.imageWrapper.querySelectorAll(`.${category}-${ingredient}`)) {
+                ingredientImage.classList.remove(classNames.menuProduct.imageVisible);
+              }
             }
           }
         }
