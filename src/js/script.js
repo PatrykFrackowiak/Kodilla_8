@@ -160,6 +160,7 @@
   class AmountWidget {
     constructor(element) {
       const thisWidget = this;
+      thisWidget.value = settings.amountWidget.defaultValue;
 
       thisWidget.getElements(element);
       thisWidget.setValue(thisWidget.input.value);
@@ -178,13 +179,16 @@
 
     setValue(value) {
       const thisWidget = this;
-
       const newValue = parseInt(value);
-      //walidacja
-      thisWidget.value = newValue;
-      thisWidget.announce();
-      thisWidget.input.value = thisWidget.value;
 
+      if (thisWidget.value !== newValue
+        && newValue >= settings.amountWidget.defaultMin
+        && newValue <= settings.amountWidget.defaultMax
+      ) {
+        thisWidget.value = newValue;
+        thisWidget.announce();
+      }
+      thisWidget.input.value = thisWidget.value;
     }
 
     intiActions() {
@@ -205,7 +209,7 @@
       });
     }
 
-    announce(){
+    announce() {
       const thisWidget = this;
 
       const event = new Event('updated');
