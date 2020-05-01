@@ -126,24 +126,37 @@
         for (let category in categories) {
           const ingredients = categories[category].options;
           for (let ingredient in ingredients) {
-            if (!ingredients[ingredient].default && formData[category].includes(ingredient)) {
-              price += ingredients[ingredient].price;
-            } else if (ingredients[ingredient].default && !formData[category].includes(ingredient)) {
-              price -= ingredients[ingredient].price;
-            }
-            if (formData[category].includes(ingredient)) {
-              for (let ingredientImage of thisProduct.imageWrapper.querySelectorAll(`.${category}-${ingredient}`)) {
-                ingredientImage.classList.add(classNames.menuProduct.imageVisible);
-              }
-            } else {
-              for (let ingredientImage of thisProduct.imageWrapper.querySelectorAll(`.${category}-${ingredient}`)) {
-                ingredientImage.classList.remove(classNames.menuProduct.imageVisible);
-              }
-            }
+            price += thisProduct.getPriceOfIngredient(ingredients[ingredient], ingredient, formData[category]);
+            thisProduct.showIngredients(formData, category, ingredient);
           }
         }
         price *= thisProduct.amountWidget.value;
         thisProduct.priceElem.innerHTML = price;
+      }
+    }
+
+    getPriceOfIngredient(ingredientData, ingredientName, selectedIngredients) {
+      if (!ingredientData.default && selectedIngredients.includes(ingredientName)) {
+        return ingredientData.price;
+      }
+      if (ingredientData.default && !selectedIngredients.includes(ingredientName)) {
+        return -ingredientData.price;
+      }
+      return 0;
+    }
+
+    showIngredients(formData, category, ingredient) {
+      const thisProduct = this;
+
+      if (formData[category].includes(ingredient)) {
+        for (let ingredientImage of thisProduct.imageWrapper.querySelectorAll(`.${category}-${ingredient}`)) {
+          ingredientImage.classList.add(classNames.menuProduct.imageVisible);
+        }
+      }
+      else {
+        for (let ingredientImage of thisProduct.imageWrapper.querySelectorAll(`.${category}-${ingredient}`)) {
+          ingredientImage.classList.remove(classNames.menuProduct.imageVisible);
+        }
       }
     }
 
