@@ -85,7 +85,7 @@
       this.renderInMenu();
       this.getElements();
       this.initAccordion();
-      this.initOrderFrom();
+      this.initOrderForm();
       this.initAmountWidget();
       this.processOrder();
     }
@@ -109,7 +109,7 @@
       thisProduct.amountWidgetElem = thisProduct.element.querySelector(select.menuProduct.amountWidget);
     }
 
-    initAccordion() { //fixme crust and plate are invisivle :<
+    initAccordion() {
       const thisProduct = this;
       thisProduct.accordionTrigger.addEventListener('click', (event) => {
         event.preventDefault();
@@ -123,7 +123,7 @@
       });
     }
 
-    initOrderFrom() {
+    initOrderForm() {
       const thisProduct = this;
 
       thisProduct.form.addEventListener('submit', function (event) {
@@ -140,12 +140,14 @@
       thisProduct.cartButton.addEventListener('click', function (event) {
         event.preventDefault();
         thisProduct.processOrder();
+        thisProduct.addToCart();
       });
     }
 
     processOrder() {
       const thisProduct = this;
       const formData = utils.serializeFormToObject(thisProduct.form);
+      thisProduct.params = {};
       let price = thisProduct.data.price;
       const categories = thisProduct.data.params;
       if (categories) {
@@ -153,11 +155,25 @@
           const ingredients = categories[category].options;
           for (let ingredient in ingredients) {
             price += thisProduct.getPriceOfIngredient(ingredients[ingredient], ingredient, formData[category]);
-            thisProduct.showIngredients(formData, category, ingredient);
+
+            if (formData[category].includes(ingredient)) {
+              thisProduct.changeIngredientVisibility(category, ingredient, (classList, classname) => classList.add(classname));
+
+              if (!thisProduct.params[category]) {
+                thisProduct.params[category] = {
+                  label: categories[category].label,
+                  options: {},
+                };
+              }
+              thisProduct.params[category].options[ingredient] = ingredients[ingredient].label;
+            } else {
+              thisProduct.changeIngredientVisibility(category, ingredient, (classList, classname) => classList.remove(classname));
+            }
           }
         }
-        price *= thisProduct.amountWidget.value;
-        thisProduct.priceElem.innerHTML = price;
+        thisProduct.priceSingle = price;
+        thisProduct.price = thisProduct.priceSingle * thisProduct.amountWidget.value;
+        thisProduct.priceElem.innerHTML = thisProduct.price;
       }
     }
 
@@ -171,18 +187,10 @@
       return 0;
     }
 
-    showIngredients(formData, category, ingredient) {
+    changeIngredientVisibility(category, ingredient, toggleClass) {
       const thisProduct = this;
-
-      if (formData[category].includes(ingredient)) {
-        for (let ingredientImage of thisProduct.imageWrapper.querySelectorAll(`.${category}-${ingredient}`)) {
-          ingredientImage.classList.add(classNames.menuProduct.imageVisible);
-        }
-      }
-      else {
-        for (let ingredientImage of thisProduct.imageWrapper.querySelectorAll(`.${category}-${ingredient}`)) {
-          ingredientImage.classList.remove(classNames.menuProduct.imageVisible);
-        }
+      for (let ingredientImage of thisProduct.imageWrapper.querySelectorAll(`.${category}-${ingredient}`)) {
+        toggleClass(ingredientImage.classList, classNames.menuProduct.imageVisible);
       }
     }
 
@@ -193,6 +201,14 @@
       thisProduct.amountWidgetElem.addEventListener('updated', () => {
         thisProduct.processOrder();
       });
+    }
+
+    addToCart() {
+      const thisProduct = this;
+
+      thisProduct.name = thisProduct.data.name;
+      thisProduct.amount = thisProduct.amountWidget.value;
+      app.cart.add(thisProduct);
     }
   }
 
@@ -262,19 +278,28 @@
       thisCart.initActions();
     }
 
-    getElements(element){
+    getElements(element) {
       const thisCart = this;
       thisCart.dom = {};
       thisCart.dom.wrapper = element;
       thisCart.dom.toggleTrigger = element.querySelector(select.cart.toggleTrigger);
+      thisCart.dom.productList = element.querySelector(select.cart.productList);
     }
 
-    initActions(){
-      const thisCart =this;
-      thisCart.dom.toggleTrigger.addEventListener('click', () =>{
+    initActions() {
+      const thisCart = this;
+      thisCart.dom.toggleTrigger.addEventListener('click', () => {
         const wrapper = thisCart.dom.wrapper;
         wrapper.classList.toggle(classNames.cart.wrapperActive);
       });
+    }
+
+    add(menuProduct) {
+      console.log(menuProduct);
+      const thisCart = this;
+      const generatedHTML = templates.cartProduct(menuProduct);
+      const generatedDOM = utils.createDOMFromHTML(generatedHTML);
+      thisCart.dom.productList.appendChild(generatedDOM);
     }
   }
 
@@ -291,7 +316,7 @@
       thisApp.data = dataSource;
     },
 
-    initCart: function(){
+    initCart: function () {
       const thisApp = this;
       const cartElem = document.querySelector(select.containerOf.cart);
       thisApp.cart = new Cart(cartElem);
