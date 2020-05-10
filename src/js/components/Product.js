@@ -71,8 +71,8 @@ class Product {
   processOrder() {
     const thisProduct = this;
     const formData = utils.serializeFormToObject(thisProduct.form);
-    let price = thisProduct.data.price;
     const categories = thisProduct.data.params;
+    let price = thisProduct.data.price;
     thisProduct.params = {};
     if (categories) {
       for (let category in categories) {
@@ -132,7 +132,6 @@ class Product {
 
     thisProduct.name = thisProduct.data.name;
     thisProduct.amount = thisProduct.amountWidget.value;
-    // app.cart.add(thisProduct);
 
     const event = new CustomEvent('add-to-cart', {
       bubbles: true,

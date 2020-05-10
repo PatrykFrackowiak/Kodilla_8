@@ -1,4 +1,4 @@
-import {select} from '../settings.js';
+import { select } from '../settings.js';
 import AmountWidget from './AmountWidget.js';
 
 class CartProduct {
@@ -8,7 +8,7 @@ class CartProduct {
     this.price = menuProduct.price;
     this.priceSingle = menuProduct.priceSingle;
     this.amount = menuProduct.amount;
-    this.params = JSON.parse(JSON.stringify(menuProduct.params));
+    this.params = { ...menuProduct.params };
 
     this.getElements(element);
     this.initAmountWidget();
@@ -17,13 +17,13 @@ class CartProduct {
 
   getElements(element) {
     const thisCartProduct = this;
-    thisCartProduct.dom = {};
-
-    thisCartProduct.dom.wrapper = element;
-    thisCartProduct.dom.amountWidget = thisCartProduct.dom.wrapper.querySelector(select.cartProduct.amountWidget);
-    thisCartProduct.dom.price = thisCartProduct.dom.wrapper.querySelector(select.cartProduct.price);
-    thisCartProduct.dom.edit = thisCartProduct.dom.wrapper.querySelector(select.cartProduct.edit);
-    thisCartProduct.dom.remove = thisCartProduct.dom.wrapper.querySelector(select.cartProduct.remove);
+    thisCartProduct.dom = {
+      wrapper: element,
+      amountWidget: element.querySelector(select.cartProduct.amountWidget),
+      price: element.querySelector(select.cartProduct.price),
+      edit: element.querySelector(select.cartProduct.edit),
+      remove: element.querySelector(select.cartProduct.remove),
+    };
   }
 
   initAmountWidget() {
@@ -39,12 +39,13 @@ class CartProduct {
 
   initActions() {
     const thisCartProduct = this;
+    const cartProductDom = thisCartProduct.dom;
 
-    thisCartProduct.dom.edit.addEventListener('click', (event) => {
+    cartProductDom.edit.addEventListener('click', (event) => {
       event.preventDefault();
     });
 
-    thisCartProduct.dom.remove.addEventListener('click', (event) => {
+    cartProductDom.remove.addEventListener('click', (event) => {
       event.preventDefault();
       thisCartProduct.remove();
     });

@@ -1,4 +1,4 @@
-import {settings, select, classNames, templates} from '../settings.js';
+import { settings, select, classNames, templates } from '../settings.js';
 import utils from '../utils.js';
 import CartProduct from './CartProduct.js';
 
@@ -13,13 +13,14 @@ class Cart {
 
   getElements(element) {
     const thisCart = this;
-    thisCart.dom = {};
-    thisCart.dom.wrapper = element;
-    thisCart.dom.toggleTrigger = element.querySelector(select.cart.toggleTrigger);
-    thisCart.dom.productList = element.querySelector(select.cart.productList);
-    thisCart.dom.form = element.querySelector(select.cart.form);
-    thisCart.dom.phone = element.querySelector(select.cart.phone);
-    thisCart.dom.address = element.querySelector(select.cart.address);
+    thisCart.dom = {
+      wrapper: element,
+      toggleTrigger: element.querySelector(select.cart.toggleTrigger),
+      productList: element.querySelector(select.cart.productList),
+      form: element.querySelector(select.cart.form),
+      phone: element.querySelector(select.cart.phone),
+      address: element.querySelector(select.cart.address),
+    };
     thisCart.renderTotalsKeys = ['totalNumber', 'totalPrice', 'subtotalPrice', 'deliveryFee'];
 
     for (let key of thisCart.renderTotalsKeys) {
@@ -29,20 +30,21 @@ class Cart {
 
   initActions() {
     const thisCart = this;
-    thisCart.dom.toggleTrigger.addEventListener('click', () => {
-      const wrapper = thisCart.dom.wrapper;
+    const cartDom = thisCart.dom;
+    cartDom.toggleTrigger.addEventListener('click', () => {
+      const wrapper = cartDom.wrapper;
       wrapper.classList.toggle(classNames.cart.wrapperActive);
     });
 
-    thisCart.dom.productList.addEventListener('updated', () => {
+    cartDom.productList.addEventListener('updated', () => {
       thisCart.update();
     });
 
-    thisCart.dom.productList.addEventListener('remove', (event) => {
+    cartDom.productList.addEventListener('remove', (event) => {
       thisCart.remove(event.detail.cartProduct);
     });
 
-    thisCart.dom.form.addEventListener('submit', (event) => {
+    cartDom.form.addEventListener('submit', (event) => {
       event.preventDefault();
       thisCart.sendOrder();
     });
@@ -104,11 +106,8 @@ class Cart {
     };
 
     fetch(url, options)
-      .then((response) => {
-        return response.json();
-      }).then((parsedResponse) => {
-        console.log(parsedResponse);
-      });
+      .then(response => response.json())
+      .then(parsedResponse => console.log(parsedResponse));
   }
 }
 
