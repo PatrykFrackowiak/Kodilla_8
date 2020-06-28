@@ -33,6 +33,17 @@ const app = {
         window.location.hash = '#/' + id;
       });
     }
+
+    for(let link of document.querySelectorAll(select.menu.navigationElements)){
+      link.addEventListener('click', function(event) {
+        const clickedElement = this;
+        event.preventDefault();
+
+        const id = clickedElement.getAttribute('href').replace('#', '');
+        thisApp.activatePage(id);
+        window.location.hash = '#/' + id;
+      });
+    }
   },
 
   activatePage: function(pageId) {

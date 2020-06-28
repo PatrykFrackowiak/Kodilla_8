@@ -1,16 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Pizzeria</title>
-  <link href="https://fonts.googleapis.com/css?family=Lato:400,300i,700%7COswald:300,500,700&amp;subset=latin-ext" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Lato:400,300i,700%7COswald:300,500,700&amp;subset=latin-ext"
+    rel="stylesheet">
   <link href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
   <link rel="stylesheet" href="vendor/range-slider.min.css">
   <link rel="stylesheet" href="css/style.css">
 </head>
+
 <body>
 
   <header class="header">
@@ -26,7 +30,7 @@
         </div>
         <div id="cart" class="cart">
           <div class="cart__summary">
-            <span class="cart__total-number">5</span>
+            <span class="cart__total-number">0</span>
             <span class="cart__total-price">Total price: $<strong>0</strong></span>
             <i class="fas fa-chevron-down"></i>
             <i class="fas fa-shopping-cart cart__icon"></i>
@@ -62,6 +66,142 @@
   </header>
 
   <div id="pages">
+    <section id="main" class="main-section">
+      <div class="main-wrapper container">
+        <div class="menu-header">
+          <div class="menu-navigation d-flex">
+            <div class="col-6 px-1">
+              <a href="#order" class="menu-navigation-element menu-order rounded">
+                <h5 class="text-center menu-order-header"><span>ORDER ONLINE</span></h5>
+                <p class="text-center menu-order-text">Delicious food delivered to Your door</p>
+              </a>
+            </div>
+            <div class="col-6 px-1">
+              <a href="#booking" class="menu-navigation-element menu-booking rounded">
+                <h5 class="text-center menu-booking-header"><span>BOOK A TABLE</span></h5>
+                <p class="text-center menu-booking-text">Book a table for Your friends and family</p>
+              </a>
+            </div>
+          </div>
+          <div class="opening-hours d-block rounded mx-1 my-2">
+            <h5 class="text-center"><span>OPENING HOURS:</span></h5>
+            <p class="text-center">MON-SUN, 12PM - 11PM</p>
+          </div>
+        </div>
+
+        <div id="comment-carousel" class="carousel slide my-5 py-5" data-ride="carousel" data-interval="3000">
+          <div class="carousel-inner">
+            <div class="carousel-item active">
+              <div class="d-flex">
+                <img class="col-4 rounded square" src="assets/pizza-3.jpg" alt="image">
+                <div class="col-8">
+                  <h5>AMAZING SERVICE!</h5>
+                  <p>Moja ulubiona pizzeria. Daja dużo świezych składników, które są smaczne i wgl. Mniam mniam, om nom
+                    nom. <br /><br /> -Margaret Osborne</p>
+                </div>
+              </div>
+            </div>
+            <div class="carousel-item">
+              <div class="d-flex">
+                <img class="col-4 rounded square" src="assets/pizza-4.jpg" alt="image">
+                <div class="col-8">
+                  <h5>AMAZING SERVICE!</h5>
+                  <p>Moja ulubiona pizzeria. Daja dużo świezych składników, które są smaczne i wgl. Mniam mniam, om nom
+                    nom. <br /><br /> -Margaret Osborne</p>
+                </div>
+              </div>
+            </div>
+            <div class="carousel-item">
+              <div class="d-flex">
+                <img class="col-4 rounded square" src="assets/pizza-5.jpg" alt="image">
+                <div class="col-8">
+                  <h5>AMAZING SERVICE!</h5>
+                  <p>Moja ulubiona pizzeria. Daja dużo świezych składników, które są smaczne i wgl. Mniam mniam, om nom
+                    nom. <br /><br /> -Margaret Osborne</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <ol class="carousel-indicators">
+            <li data-target="#comment-carousel" data-slide-to="0" class="active"></li>
+            <li data-target="#comment-carousel" data-slide-to="1"></li>
+            <li data-target="#comment-carousel" data-slide-to="2"></li>
+          </ol>
+        </div>
+
+        <div class="gallery-container">
+          <div class="gallery">
+            <div class="d-flex">
+              <div class="gallery-element square col-4">
+                <div class="gallery-photo">
+                  <img src="assets/pizza-1.jpg" class="rounded" alt="Pizza6" />
+                </div>
+                <div class="gallery-content d-flex align-items-center justify-content-center">
+                  <i class="fa fa-heart px-2" aria-hidden="true"></i>
+                  <i class="fa fa-share-alt px-2"></i>
+                </div>
+                <div class="overlay rounded"></div>
+              </div>
+              <div class="gallery-element square col-4">
+                <div class="gallery-photo">
+                  <img src="assets/pizza-2.jpg" class="rounded" alt="Pizza6" />
+                </div>
+                <div class="gallery-content d-flex align-items-center justify-content-center">
+                  <i class="fa fa-heart px-2" aria-hidden="true"></i>
+                  <i class="fa fa-share-alt px-2"></i>
+                </div>
+                <div class="overlay rounded"></div>
+              </div>
+              <div class="gallery-element square col-4">
+                <div class="gallery-photo">
+                  <img src="assets/pizza-7.jpg" class="rounded" alt="Pizza6" />
+                </div>
+                <div class="gallery-content d-flex align-items-center justify-content-center">
+                  <i class="fa fa-heart px-2" aria-hidden="true"></i>
+                  <i class="fa fa-share-alt px-2"></i>
+                </div>
+                <div class="overlay rounded"></div>
+              </div>
+            </div>
+          </div>
+          <div class="gallery">
+            <div class="d-flex">
+              <div class="gallery-element square col-4">
+                <div class="gallery-photo">
+                  <img src="assets/pizza-8.jpg" class="rounded" alt="Pizza6" />
+                </div>
+                <div class="gallery-content d-flex align-items-center justify-content-center">
+                  <i class="fa fa-heart px-2" aria-hidden="true"></i>
+                  <i class="fa fa-share-alt px-2"></i>
+                </div>
+                <div class="overlay rounded"></div>
+              </div>
+              <div class="gallery-element square col-4">
+                <div class="gallery-photo">
+                  <img src="assets/pizza-9.jpg" class="rounded" alt="Pizza6" />
+                </div>
+                <div class="gallery-content d-flex align-items-center justify-content-center">
+                  <i class="fa fa-heart px-2" aria-hidden="true"></i>
+                  <i class="fa fa-share-alt px-2"></i>
+                </div>
+                <div class="overlay rounded"></div>
+              </div>
+              <div class="gallery-element square col-4">
+                <div class="gallery-photo">
+                  <img src="assets/pizza-3.jpg" class="rounded" alt="Pizza6" />
+                </div>
+                <div class="gallery-content d-flex align-items-center justify-content-center">
+                  <i class="fa fa-heart px-2" aria-hidden="true"></i>
+                  <i class="fa fa-share-alt px-2"></i>
+                </div>
+                <div class="overlay rounded"></div>
+              </div>
+            </div>
+          </div>
+          <a href="#" class="insta-link">View more on instragram</a>
+        </div>
+      </div>
+    </section>
     <section id="order">
       <div id="product-list" class="product-list container"></div>
     </section>
@@ -243,9 +383,14 @@
     </article> <!-- .product -->
   </script>
 
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+    integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+    crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
   <script src="vendor/range-slider.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.1.0/handlebars.min.js"></script>
   <script src="js/app.js" type="module"></script>
 </body>
+
 </html>
